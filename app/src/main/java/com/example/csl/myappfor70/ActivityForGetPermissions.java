@@ -8,20 +8,15 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
-
-import java.io.File;
 
 /**
  * 动态获取权限
@@ -54,15 +49,15 @@ public class ActivityForGetPermissions extends AppCompatActivity{
         findViewById(R.id.btnOpenCameraNew).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                File file=new File(Environment.getExternalStorageDirectory(), "/temp/"+System.currentTimeMillis() + ".jpg");
-                if (!file.getParentFile().exists())file.getParentFile().mkdirs();
-                Uri imageUri = FileProvider.getUriForFile(ActivityForGetPermissions.this, "com.jph.takephoto.fileprovider", file);
-                //通过FileProvider创建一个content类型的Uri
-                Intent intent = new Intent();
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); //添加这一句表示对目标应用临时授权该Uri所代表的文件
-                intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);//设置Action为拍照
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);//将拍取的照片保存到指定URI
-                startActivityForResult(intent,1006);
+               //版本判断，系统大于23的时候就判断权限是否获取
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                    //检查权限是否获取
+                    int i = ContextCompat.checkSelfPermission(ActivityForGetPermissions.this,permissions[1]);
+                    //权限是否已经授权 GRANTED--授权 DINED--拒绝
+                    if (i != PackageManager.PERMISSION_GRANTED){
+                        showDialogTipUserRequestPermission();
+                    }
+                }
             }
         });
     }
@@ -93,9 +88,8 @@ public class ActivityForGetPermissions extends AppCompatActivity{
                 }).setCancelable(false).show();
     }
     private void startRequestPermission() {
-        ActivityCompat.requestPermissions(this, permissions, 123);
+        ActivityCompat.requestPermissions(this, permissions, 321);
     }
-
     // 跳转到当前应用的设置界面
     private void goToAppSetting() {
         Intent intent = new Intent();
@@ -120,6 +114,7 @@ public class ActivityForGetPermissions extends AppCompatActivity{
                         dialog.dismiss();
                     }
                     Toast.makeText(this, "权限获取成功", Toast.LENGTH_SHORT).show();
+
                 }
             }
         }
