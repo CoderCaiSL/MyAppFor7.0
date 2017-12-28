@@ -89,17 +89,23 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent,1008);
             }
         });
+        findViewById(R.id.btnToSecond).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ActivityForGetPermissions.startAction(MainActivity.this);
+            }
+        });
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1008) {
             Uri uri = data.getData();
-            Log.e("图片地址裁剪",uri.toString());
+            Log.e("图片地址裁剪",data.toURI());
             //to do find the path of pic
 
         } else if (requestCode == 1006 ) {
             Uri uri = data.getData();
-            Log.e("图片地址",uri.toString());
+            Log.e("图片地址",data.toURI());
             //to do find the path of pic
         } }
 }
