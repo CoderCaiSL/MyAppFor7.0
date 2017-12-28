@@ -21,7 +21,7 @@
         android:resource="@xml/file_paths" />
 </provider>
 ```
-  * 心得：exported:要求必须为false，为true则会报安全异常。grantUriPermissions:true，表示授予 URI 临时访问权限。
+     * 心得：exported:要求必须为false，为true则会报安全异常。grantUriPermissions:true，表示授予 URI 临时访问权限。
 * 第二步：指定共享的目录
 ```java
 <?xml version="1.0" encoding="utf-8"?>
@@ -55,7 +55,7 @@ intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);//设置Action为拍照
 intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);//将拍取的照片保存到指定URI
 startActivityForResult(intent,1006);
 ```
-######上述代码中主要有两处改变：
+###### 上述代码中主要有两处改变：
     * 将之前Uri的scheme类型为file的Uri改成了有FileProvider创建一个content类型的Uri。
     * 添加了intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);来对目标应用临时授权该Uri所代表的文件。
     
