@@ -21,7 +21,7 @@
         android:resource="@xml/file_paths" />
 </provider>
 ```
-     * 心得：exported:要求必须为false，为true则会报安全异常。grantUriPermissions:true，表示授予 URI 临时访问权限。
+    * 心得：exported:要求必须为false，为true则会报安全异常。grantUriPermissions:true，表示授予 URI 临时访问权限。
 * 第二步：指定共享的目录
 ```java
 <?xml version="1.0" encoding="utf-8"?>
@@ -30,10 +30,11 @@
         <external-path path="" name="camera_photos" />
     </paths>
 </resources>
-  *<files-path/>代表的根目录： Context.getFilesDir()
-  *<external-path/>代表的根目录: Environment.getExternalStorageDirectory()
-  *<cache-path/>代表的根目录: getCacheDir()
   ```
+    * <files-path/>代表的根目录： Context.getFilesDir()
+    * <external-path/>代表的根目录: Environment.getExternalStorageDirectory()
+    * <cache-path/>代表的根目录: getCacheDir()
+
 * 第三步：使用FileProvider
 ```java
 File file=new File(Environment.getExternalStorageDirectory(), "/temp/"+System.currentTimeMillis() + ".jpg");
@@ -45,7 +46,7 @@ intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);//设置Action为拍照
 intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);//将拍取的照片保存到指定URI
 startActivityForResult(intent,1006);
 ```
-  * 上面的就是使用fileProvider来进行操作的拍照，可以对比下7.0以前的，下面是7.0系统之前的拍照的源码
+    * 上面的就是使用fileProvider来进行操作的拍照，可以对比下7.0以前的，下面是7.0系统之前的拍照的源码
   ```java
 File file=new File(Environment.getExternalStorageDirectory(), "/temp/"+System.currentTimeMillis() + ".jpg");
 if (!file.getParentFile().exists())file.getParentFile().mkdirs();
