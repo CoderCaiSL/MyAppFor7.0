@@ -58,7 +58,7 @@ startActivityForResult(intent,1006);
 ```
 ###### 上述代码中主要有两处改变：
     * 将之前Uri的scheme类型为file的Uri改成了有FileProvider创建一个content类型的Uri。
-    * 添加了intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);来对目标应用临时授权该Uri所代表的文件。
+        * 添加了intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);来对目标应用临时授权该Uri所代表的文件。
     
 心得：上述代码通过FileProvider的Uri getUriForFile (Context context, String authority, File file)
 静态方法来获取Uri，该方法中authority参数就是清单文件中注册provider的android:authorities="com.jph.takephoto.fileprovider"。
